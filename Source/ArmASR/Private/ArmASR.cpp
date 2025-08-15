@@ -556,8 +556,9 @@ UE::Renderer::Private::ITemporalUpscaler::FOutputs FArmASRTemporalUpscaler::AddP
 	}
 
 	// If AutoExposure is enabled use Exposure generated from Compute Luminance shader, otherwise use Engine exposure.
+	// As UltraPerformance preset removes Compute Luminance Pass, it always uses Engine exposure.
 	FRDGTextureRef ExposureTexture = nullptr;
-	if (bRequestedAutoExposure)
+	if (bRequestedAutoExposure && !bIsUltraPerformance)
 	{
 		ExposureTexture = ClpShaderParameters->rw_auto_exposure->Desc.Texture;
 	}
