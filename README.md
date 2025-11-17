@@ -127,7 +127,7 @@ For more details about changing the default RHI in UE, please read [this article
 Once installed, the plugin will automatically handle the upscaling of all frames, as long as temporal upscaling is enabled on your project. In order to enable it, the folowing console variable needs to be set under `[/Script/Engine.RendererSettings]`:
 
 ```
-r.AntiAlisingMethod=2
+r.AntiAliasingMethod=2
 ```
 
 NOTE: Please note that, though there is a separate `r.Mobile.AntiAliasing` control variable as well, it is the one above that needs to be set for temporal upscaling to run on Vulkan® SM5.
