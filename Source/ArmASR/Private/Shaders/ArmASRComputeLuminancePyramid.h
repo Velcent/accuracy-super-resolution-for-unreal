@@ -136,10 +136,17 @@ inline void SetComputeLuminancePyramidParameters(
 	FRDGTextureDesc MipShadingChangeDesc = FRDGTextureDesc::Create2D(
 		MipSize, MipShadingFormat, FClearValueBinding::Black, TexCreate_ShaderResource | TexCreate_UAV, MipCount, 1);
 	FRDGTextureRef MipShadingChangeTexture = GraphBuilder.CreateTexture(MipShadingChangeDesc, TEXT("MipShadingChangeTexture"));
-	FRDGTextureUAVDesc MipShadingChangeUAVDesc(MipShadingChangeTexture, FFXM_FSR2_SHADING_CHANGE_MIP_LEVEL);
+
+	const uint32 TextureMipCount = MipShadingChangeTexture->Desc.NumMips;
+	const uint32 SafeMipLevel = FMath::Min<uint32>(FFXM_FSR2_SHADING_CHANGE_MIP_LEVEL, TextureMipCount - 1);
+
+	FRDGTextureUAVDesc MipShadingChangeUAVDesc(MipShadingChangeTexture, SafeMipLevel);
 	ClpShaderParameters->rw_img_mip_shading_change = GraphBuilder.CreateUAV(MipShadingChangeUAVDesc);
 
-	FRDGTextureUAVDesc Mip5UAVDesc(MipShadingChangeTexture, FFXM_FSR2_SHADING_CHANGE_MIPMAP_5);
+	const uint32 NumMips = MipShadingChangeTexture->Desc.NumMips;
+	const uint32 Mipmap5 = FMath::Min<uint32>(FFXM_FSR2_SHADING_CHANGE_MIPMAP_5, NumMips - 1);
+
+	FRDGTextureUAVDesc Mip5UAVDesc(MipShadingChangeTexture, Mipmap5);
 	ClpShaderParameters->rw_img_mip_5 = GraphBuilder.CreateUAV(Mip5UAVDesc);
 
 	const EPixelFormat AutoExposureFormat = bIsOpenGL ? PF_FloatRGBA : PF_G32R32F;
