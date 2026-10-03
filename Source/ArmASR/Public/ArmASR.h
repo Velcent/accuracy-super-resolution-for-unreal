@@ -48,7 +48,7 @@ private:
 
 	FDelegateHandle OnPostEngineInitHandle;
 	FDelegateHandle OnObjectPropertyChangedHandle;
-	TSharedPtr<FArmASRSceneViewExtension> SceneViewExtension;
+	TSharedPtr<FArmASRSceneViewExtension, ESPMode::ThreadSafe> SceneViewExtension;
 
 private:
 	TUniquePtr<FArmASRTemporalUpscaler> TemporalUpscaler;

@@ -9,6 +9,8 @@
 #include "TemporalUpscaler.h"
 #include "ArmASRPassthroughDenoiser.h"
 #include "ArmASRSettings.h"
+#include "SceneViewState.h"
+#include "Lumen/LumenViewState.h"
 
 #define ARM_ASR_ENABLE_VK 1
 
@@ -161,7 +163,7 @@ IMPLEMENT_GLOBAL_SHADER(FArmASRReconstructPrevDepthPS, "/Plugin/ArmASR/Private/R
 						SF_Pixel);
 
 // History written by frame N and read by frame N + 1.
-class FArmASRTemporalAAHistory : public UE::Renderer::Private::ITemporalUpscaler::IHistory, public FRefCountBase
+class FArmASRTemporalAAHistory : public UE::Renderer::Private::ITemporalUpscaler::IHistory, public FRefCountedObject
 {
 public:
 	FArmASRTemporalAAHistory() :
@@ -186,19 +188,19 @@ public:
 	   return ComputeMemorySize();
 	}
 
-	uint32 AddRef() const final
+	void AddRef() const final
 	{
-		return FRefCountBase::AddRef();
+		FRefCountedObject::AddRef();
 	}
 
-	uint32 Release() const final
+	FReturnedRefCountValue Release() const final
 	{
-		return FRefCountBase::Release();
+		return FRefCountedObject::Release();
 	}
 
-	uint32 GetRefCount() const final
+	FReturnedRefCountValue GetRefCount() const final 
 	{
-		return FRefCountBase::GetRefCount();
+		return FRefCountedObject::GetRefCount();
 	}
 
 	bool IsValid(const EShaderQualityPreset QualityPreset) const

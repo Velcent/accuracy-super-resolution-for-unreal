@@ -22,7 +22,8 @@ public class ArmASR : ModuleRules
 				// ... add other private include paths required here ...
 				Path.Combine(EngineDirectory,"Source/Runtime/Renderer/Private"),
 				Path.Combine(PluginDirectory,"Shaders/Private/fsr2"),
-			}
+                Path.Combine(GetModuleDirectory("Renderer"), "Internal"),
+            }
 		);
 
 		PublicDependencyModuleNames.AddRange(

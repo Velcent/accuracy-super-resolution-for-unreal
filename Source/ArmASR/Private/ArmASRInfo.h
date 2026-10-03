@@ -6,6 +6,7 @@
 #pragma once
 
 #include "PostProcess/PostProcessing.h"
+#include "PostProcess/PostProcessInputs.h"
 #include "RenderGraphUtils.h"
 #include "ArmASRPassthroughDenoiser.h"
 
